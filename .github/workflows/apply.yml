@@ -1,16 +1,13 @@
-name: 'Terraform CICD GitHub Actions'
+name: 'Terraform Plan'
 
 on:
-  workflow_dispatch:
-    branches:
-      - main
   push:
     branches:
       - main
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  terraform_plan:
+    name: 'Plan'
     runs-on: ubuntu-latest
     environment: dev
 
@@ -29,30 +26,19 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'us-west-2'
-    
+
     - name: Terraform Init
-      id: init
       run: |
         cd infra
         terraform init
 
-    - name: Terraform Validate
-      id: validate
-      run: |
-        cd infra
-        terraform validate
-
     - name: Terraform Plan
-      id: plan
       run: |
         cd infra
-        terraform plan
-    
-    - name: Manual Approval
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: echo "Awaiting manual approval"
+        terraform plan -out=tfplan
 
-    - name: Terraform Apply
-      run: |
-        cd infra
-        terraform apply -auto-approve
+    - name: Upload Terraform Plan
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-plan
+        path: infra/tfplan
