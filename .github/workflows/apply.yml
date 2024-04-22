@@ -12,7 +12,7 @@ jobs:
   terraform_apply:
     name: 'Apply'
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev
 
     steps:
     - name: Checkout code
