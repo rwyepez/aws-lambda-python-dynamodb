@@ -1,15 +1,18 @@
-name: 'Terraform Plan'
+name: 'Terraform Apply'
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "confirm" to apply the Terraform plan'
+        required: true
+        default: 'confirm'
 
 jobs:
-  terraform_plan:
-    name: 'Plan'
+  terraform_apply:
+    name: 'Apply'
     runs-on: ubuntu-latest
-    environment: dev
+    environment: production
 
     steps:
     - name: Checkout code
@@ -27,18 +30,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'us-west-2'
 
-    - name: Terraform Init
-      run: |
-        cd infra
-        terraform init
-
-    - name: Terraform Plan
-      run: |
-        cd infra
-        terraform plan -out=tfplan
-
-    - name: Upload Terraform Plan
-      uses: actions/upload-artifact@v2
+    - name: Download Terraform Plan
+      uses: actions/download-artifact@v2
       with:
         name: terraform-plan
-        path: infra/tfplan
+        path: infra
+
+    - name: Terraform Apply
+      run: |
+        cd infra
+        terraform apply -auto-approve tfplan
