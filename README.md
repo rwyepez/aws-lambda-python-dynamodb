@@ -64,7 +64,7 @@ Para probar las funciones de AWS Lambda desde la consola de AWS, puedes utilizar
       "httpMethod": "GET",
       "path": "/cars",
       "queryStringParameters": {
-        "carId": "123"
+        "carId": "1"
       }
     }
     ```
@@ -75,7 +75,7 @@ Para probar las funciones de AWS Lambda desde la consola de AWS, puedes utilizar
       "httpMethod": "POST",
       "path": "/cars",
       "headers": {},
-      "body": "{\"carId\": \"123\"}"
+      "body": "{\"carId\": \"1\", \"model\": \"tesla\"}"
     }
     ```
 
