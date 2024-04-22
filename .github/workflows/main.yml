@@ -24,19 +24,27 @@ jobs:
     
     - name: Terraform Init
       id: init
-      run: terraform init -chdir=infra
+      run: |
+        cd infra
+        terraform init
 
     - name: Terraform Validate
       id: validate
-      run: terraform validate -chdir=infra
+      run: |
+        cd infra
+        terraform validate
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -chdir=infra
+      run: |
+        cd infra
+        terraform plan
     
     - name: Manual Approval
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: echo "Awaiting manual approval"
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve -chdir=infra
+      run: |
+        cd infra
+        terraform apply -auto-approve
