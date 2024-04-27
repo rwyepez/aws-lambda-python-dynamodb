@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  terraform:
+  terraform_plan:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: dev
@@ -45,8 +45,14 @@ jobs:
       run: |
         cd infra
         terraform plan
+  
+  terraform_apply:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: manual
 
-    - name: Terraform Apply
-      run: |
-        cd infra
-        terraform apply -auto-approve
+    steps:
+      - name: Terraform Apply
+        run: |
+          cd infra
+          terraform apply -auto-approve
