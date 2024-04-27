@@ -12,3 +12,6 @@
 
 # Ignore Terraform lock file
 terraform.lock.hcl
+
+# Ignore zips lambdas
+*.zip
