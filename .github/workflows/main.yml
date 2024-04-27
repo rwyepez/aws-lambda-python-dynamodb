@@ -53,7 +53,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+      
+      - name: Terraform Init
+        id: init
+        run: |
+          cd infra
+          terraform init
+
       - name: Terraform Apply
         run: |
           cd infra
