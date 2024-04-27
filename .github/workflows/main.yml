@@ -46,7 +46,7 @@ jobs:
           terraform plan
   
   terraform_apply:
-    name: 'Terraform Applys'
+    name: 'Terraform Apply'
     runs-on: ubuntu-latest
     environment: manual
     needs: terraform_plan
