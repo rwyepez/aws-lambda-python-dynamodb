@@ -1,13 +1,14 @@
-name: 'Terraform Plan'
+name: 'Terraform CICD GitHub Actions'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  terraform_plan:
-    name: 'Plan'
+  terraform:
+    name: 'Terraform'
     runs-on: ubuntu-latest
     environment: dev
 
@@ -26,19 +27,26 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'us-west-2'
-
+    
     - name: Terraform Init
+      id: init
       run: |
         cd infra
         terraform init
 
-    - name: Terraform Plan
+    - name: Terraform Validate
+      id: validate
       run: |
         cd infra
-        terraform plan -out=tfplan
+        terraform validate
 
-    - name: Upload Terraform Plan
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-plan
-        path: infra/tfplan
+    - name: Terraform Plan
+      id: plan
+      run: |
+        cd infra
+        terraform plan
+
+    - name: Terraform Apply
+      run: |
+        cd infra
+        terraform apply -auto-approve
