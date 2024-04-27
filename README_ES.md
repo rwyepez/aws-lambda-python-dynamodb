@@ -28,7 +28,7 @@ Antes de comenzar, necesitarás configurar tu entorno con algunas herramientas y
   aws configure
   ```
 
-## Despliegue de Infraestructura con Terraform
+## Despliegue de Infraestructura con Terraform Manualmente
 
 Para desplegar la infraestructura necesaria para este proyecto, sigue los siguientes pasos:
 
@@ -51,6 +51,19 @@ Para desplegar la infraestructura necesaria para este proyecto, sigue los siguie
       ```bash
       terraform apply --auto-approve
       ```
+
+## Despliegue de Infraestructura con GitHub Workflows
+Crea la siguiente estructura de carpetas para activar acciones en GitHub:
+  .github/workflows
+Luego, crea el archivo `main.yml` para describir todos los pasos para desplegar recursos automáticamente cuando exista un push en main.
+Además, crea dos entornos en:
+Settings -> Environments -> New Environment:
+
+1. Nombre: dev
+  - Agrega 2 secretos de entorno con tus credenciales de AWS para desplegar infraestructura desde GitHub: AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY.
+2. Nombre: manual (Para forzar un aprobador manual antes de aplicar cambios)
+  - Selecciona la opción "Revisores requeridos" e incluye a ti mismo, otro usuario o un grupo, hasta 6 revisores.
+  - Agrega 2 secretos de entorno con tus credenciales de AWS para desplegar infraestructura desde GitHub: AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY. *Importante: verifica si existen mejores prácticas para evitar duplicar las credenciales en dos entornos.
 
 ## Uso
 

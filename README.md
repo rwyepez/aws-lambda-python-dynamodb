@@ -28,7 +28,7 @@ Before getting started, you'll need to set up your environment with some tools a
   aws configure
   ```
 
-## Deploying Infrastructure with Terraform
+## Deploying Infrastructure with Terraform manually
 
 To deploy the necessary infrastructure for this project, follow these steps:
 
@@ -51,6 +51,19 @@ To deploy the necessary infrastructure for this project, follow these steps:
      ```bash
      terraform apply --auto-approve
      ```
+
+## Deploying Infrastructure with GitHub Workflows
+
+Create the following folder structure to activate actions in GitHub:
+    .github/workflows
+Then create the `main.yml` file to describe all steps to deploy resources automatically when there is a push to the main branch.
+Also, create two environments in:
+Settings -> Environments -> New Environment:
+1. Name: dev
+   - Add 2 environment secrets with your AWS credentials to deploy infrastructure from GitHub: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+2. Name: manual (To force a manual approver before applying changes)
+   - Check the option "Required reviewers" and include yourself, another user, or a group, up to 6 reviewers.
+   - Include 2 environment secrets with your AWS credentials to deploy infrastructure from GitHub: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. *Important: check if there are best practices to avoid duplicating credentials in two environments.
 
 ## Usage
 

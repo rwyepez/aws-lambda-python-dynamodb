@@ -1,22 +1,24 @@
 name: 'Terraform CICD GitHub Actions'
 
+# Defines the events that will trigger the workflow.
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Allows the workflow to be manually triggered from GitHub.
+  push:              # Triggers on every push.
+    branches:        # Specifies the branches that will trigger the workflow.
+      - main         # Here, it triggers only on pushes to the 'main' branch.
 
 jobs:
+  # Defines the job to execute the Terraform plan.
   terraform_plan:
     name: 'Terraform Plan'
-    runs-on: ubuntu-latest
-    environment: dev
+    runs-on: ubuntu-latest            # Specifies that the job runs on the latest Ubuntu version.
+    environment: dev                  # Specifies the environment as 'dev'.
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3    # Uses the 'checkout' action to fetch the source code from the repository.
     
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1 # Configures the AWS credentials needed for the job.
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -26,36 +28,37 @@ jobs:
         id: init
         run: |
           cd infra
-          terraform init
+          terraform init                # Initializes a new or existing Terraform configuration.
 
       - name: Terraform Validate
         id: validate
         run: |
           cd infra
-          terraform validate
+          terraform validate            # Validates the Terraform files.
 
       - name: Terraform Plan
         id: plan
         run: |
           cd infra
-          terraform plan -out=tfplan
+          terraform plan -out=tfplan   # Creates an execution plan to reach the desired state of the configuration.
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan
-          path: infra/tfplan
+          path: infra/tfplan            # Uploads the generated plan as an artifact.
 
+  # Defines the job to apply the Terraform plan.
   terraform_apply:
     name: 'Terraform Apply'
-    runs-on: ubuntu-latest
-    environment: manual
-    needs: terraform_plan
+    runs-on: ubuntu-latest            # Specifies that the job runs on the latest Ubuntu version.
+    environment: manual               # Specifies the environment as 'manual' to indicate manual approval is required.
+    needs: terraform_plan             # Specifies that this job needs 'terraform_plan' to complete successfully first.
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3    # Reuses the 'checkout' action to fetch the source code from the repository.
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1 # Reuses the AWS credentials configuration.
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -65,9 +68,9 @@ jobs:
         id: init
         run: |
           cd infra
-          terraform init
+          terraform init                # Initializes a new or existing Terraform configuration.
           
       - name: Terraform Apply
         run: |
           cd infra
-          terraform apply -auto-approve
+          terraform apply -auto-approve # Applies the changes required to reach the desired state of the configuration.
