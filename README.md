@@ -1,88 +1,90 @@
 
 # aws-lambda-python-dynamodb
 
-## Descripción
-Este proyecto permite realizar operaciones CRUD en una tabla de DynamoDB, la cual es creada y gestionada mediante Terraform. Utiliza AWS Lambda para las operaciones, lo que hace que la solución sea serverless y escalable.
+## Description
+This project allows performing CRUD operations on a DynamoDB table, which is created and managed using Terraform. It utilizes AWS Lambda for the operations, making the solution serverless and scalable.
 
-## Requisitos Previos
-Antes de comenzar, necesitarás configurar tu entorno con algunas herramientas y configuraciones:
+*Lea este archivo en otros idiomas: [Español](README_ES.md)*
 
-1. **Cuenta AWS**: Debes tener una cuenta de AWS.
-2. **AWS CLI**: Instalado y configurado en tu máquina local. [Guía de instalación y configuración de AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
-3. **Terraform**: Deberás tener Terraform instalado para realizar pruebas locales y desplegar la infraestructura necesaria. [Descargar Terraform](https://www.terraform.io/downloads.html).
+## Prerequisites
+Before getting started, you'll need to set up your environment with some tools and configurations:
 
-## Configuración Inicial
+1. **AWS Account**: You'll need an AWS account.
+2. **AWS CLI**: Installed and configured on your local machine. [AWS CLI Installation and Configuration Guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+3. **Terraform**: You'll need Terraform installed to run local tests and deploy the necessary infrastructure. [Download Terraform](https://www.terraform.io/downloads.html).
 
-### Configurar el Estado de Terraform
+## Initial Configuration
 
-1. **Crear un Bucket en S3**:
-    - Necesitarás un bucket de S3 para manejar el estado de Terraform.
-    - Asegúrate de crear el bucket en la región donde deseas desplegar tus recursos.
+### Configure Terraform State
 
-### Configurar AWS CLI
+1. **Create an S3 Bucket**:
+   - You'll need an S3 bucket to handle Terraform state.
+   - Make sure to create the bucket in the region where you want to deploy your resources.
 
-- Asegúrate de que tu AWS CLI esté configurado correctamente ejecutando:
+### Configure AWS CLI
+
+- Ensure your AWS CLI is configured correctly by running:
   ```bash
   aws configure
   ```
 
-## Despliegue de Infraestructura con Terraform
+## Deploying Infrastructure with Terraform
 
-Para desplegar la infraestructura necesaria para este proyecto, sigue los siguientes pasos:
+To deploy the necessary infrastructure for this project, follow these steps:
 
-1. **Inicializar Terraform**:
-    - Navega al directorio donde se encuentra tu archivo `config.tf`.
-    - Inicializa Terraform:
-      ```bash
-      cd infra
-      terraform init
-      ```
+1. **Initialize Terraform**:
+   - Navigate to the directory where your `config.tf` file is located.
+   - Initialize Terraform:
+     ```bash
+     cd infra
+     terraform init
+     ```
 
-2. **Planear Cambios**:
-    - Verifica los cambios que Terraform aplicará:
-      ```bash
-      terraform plan
-      ```
+2. **Plan Changes**:
+   - Review the changes Terraform will apply:
+     ```bash
+     terraform plan
+     ```
 
-3. **Aplicar Cambios**:
-    - Aplica los cambios para configurar la infraestructura:
-      ```bash
-      terraform apply --auto-approve
-      ```
+3. **Apply Changes**:
+   - Apply the changes to configure the infrastructure:
+     ```bash
+     terraform apply --auto-approve
+     ```
 
-## Uso
+## Usage
 
-Una vez desplegada la infraestructura, puedes usar las funciones de AWS Lambda para realizar operaciones CRUD en la tabla DynamoDB configurada.
+Once the infrastructure is deployed, you can use AWS Lambda functions to perform CRUD operations on the configured DynamoDB table.
 
-### Eventos de Prueba para AWS Lambda
+### Test Events for AWS Lambda
 
-Para probar las funciones de AWS Lambda desde la consola de AWS, puedes utilizar los siguientes eventos de prueba:
+To test AWS Lambda functions from the AWS console, you can use the following test events:
 
-1. **Obtener Información de un Carro (GET)**:
-    ```json
-    {
-      "httpMethod": "GET",
-      "path": "/cars",
-      "queryStringParameters": {
-        "carId": "1"
-      }
-    }
-    ```
+1. **Get Car Information (GET)**:
+   ```json
+   {
+     "httpMethod": "GET",
+     "path": "/cars",
+     "queryStringParameters": {
+       "carId": "1"
+     }
+   }
+   ```
 
-2. **Crear un Nuevo Carro (POST)**:
-    ```json
-    {
-      "httpMethod": "POST",
-      "path": "/cars",
-      "headers": {},
-      "body": "{\"carId\": \"1\", \"model\": \"tesla\"}"
-    }
-    ```
+2. **Create a New Car (POST)**:
+   ```json
+   {
+     "httpMethod": "POST",
+     "path": "/cars",
+     "headers": {},
+     "body": "{"carId": "1", "model": "tesla"}"
+   }
+   ```
 
-## Contribuir
+## Contributing
 
-Si deseas contribuir a este proyecto, por favor considera enviar un pull request con tus cambios o mejoras.
+If you'd like to contribute to this project, please consider submitting a pull request with your changes or improvements.
 
-## Licencia
+## License
 
-Este proyecto está bajo una licencia libre. Puedes usarlo y modificarlo bajo tus propias responsabilidades y necesidades.
+This project is under a free license. You can use and modify it at your own responsibility and needs.
