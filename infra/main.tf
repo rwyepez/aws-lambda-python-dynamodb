@@ -2,62 +2,9 @@ module "dynamodb" {
   source = "./dynamodb"
 }
 
-# LAMBDAS POLICIES
-# Default lambda policy
-data "aws_iam_policy_document" "policy" {
-  statement {
-    sid    = ""
-    effect = "Allow"
-    principals {
-      identifiers = ["lambda.amazonaws.com"]
-      type        = "Service"
-    }
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-# Logging policy for lambdas
-resource "aws_iam_policy" "lambda_logging_policy" {
-  name        = "lambda_logging_policy"
-  path        = "/"
-  description = "IAM policy for logging lambdas"
-
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        "Resource" : "arn:aws:logs:*:*:*",
-        "Effect" : "Allow"
-      }
-    ]
-  })
-}
-
-# Policy with permissions to query in DynamoDB
-resource "aws_iam_policy" "policy_query_dynamodb" {
-  name        = "policy_query_dynamodb"
-  path        = "/"
-  description = "Permissions to query in dynamodb"
-
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Sid" : "VisualEditor0",
-        "Effect" : "Allow",
-        "Action": [
-            "dynamodb:Query",
-            "dynamodb:PutItem"
-        ],
-        "Resource" : module.dynamodb.dynamodb_table_arn
-      }
-    ]
-  })
+module "policies" {
+  source = "./policies"
+  dynamodb_table_arn = module.dynamodb.dynamodb_table_arn
 }
 
 # Role for lambda
@@ -74,12 +21,12 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_policy_attach" {
 }
 # Attach logging policy
 resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attach" {
-  policy_arn = aws_iam_policy.lambda_logging_policy.arn
+  policy_arn = module.policies.lambda_logging_policy_arn
   role       = aws_iam_role.lambda_role.name
 }
 # Attach query dynamo policy 
 resource "aws_iam_role_policy_attachment" "lambda_query_dynamo" {
-  policy_arn = aws_iam_policy.policy_query_dynamodb.arn
+  policy_arn = module.policies.policy_query_dynamodb_arn
   role       = aws_iam_role.lambda_role.name
 }
 
