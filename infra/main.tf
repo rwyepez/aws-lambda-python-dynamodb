@@ -159,6 +159,10 @@ resource "aws_api_gateway_method" "car_get_method" {
   resource_id   = aws_api_gateway_resource.car_resource.id
   http_method   = "GET"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.querystring.carId" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "lambda_get_integration" {
