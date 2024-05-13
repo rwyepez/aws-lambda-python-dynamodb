@@ -12,6 +12,7 @@ module "lambda" {
   lambda_logging_policy_arn = module.policies.lambda_logging_policy_arn
   aws_iam_policy_document_json = module.policies.aws_iam_policy_document_json
   dynamodb_table_name = module.dynamodb.dynamodb_table_name
+  policy_query_dynamodb_arn = module.policies.policy_query_dynamodb_arn
 }
 
 resource "aws_api_gateway_rest_api" "my_api" {

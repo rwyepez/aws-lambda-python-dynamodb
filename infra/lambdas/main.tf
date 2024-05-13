@@ -17,7 +17,7 @@ resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attach" {
 }
 # Attach query dynamo policy 
 resource "aws_iam_role_policy_attachment" "lambda_query_dynamo" {
-  policy_arn = module.policies.policy_query_dynamodb_arn
+  policy_arn = var.policy_query_dynamodb_arn
   role       = aws_iam_role.lambda_role.name
 }
 
