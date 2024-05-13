@@ -10,7 +10,7 @@ module "policies" {
 # Role for lambda
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda_role"
-  assume_role_policy = data.aws_iam_policy_document.policy.json
+  assume_role_policy = module.policies.aws_iam_policy_document_json
 }
 
 # Attach permissions for lambda role
