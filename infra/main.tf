@@ -54,7 +54,7 @@ resource "aws_iam_policy" "policy_query_dynamodb" {
             "dynamodb:Query",
             "dynamodb:PutItem"
         ],
-        "Resource" : module.dynamodb.name
+        "Resource" : module.dynamodb.dynamodb_table_name
       }
     ]
   })
@@ -102,7 +102,7 @@ resource "aws_lambda_function" "car_lambda_function" {
   timeout          = 30
   environment {
     variables = {      
-      DYNAMODB_TABLE = module.dynamodb.name
+      DYNAMODB_TABLE = module.dynamodb.dynamodb_table_name
     }
   }
 }
