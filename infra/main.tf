@@ -54,7 +54,7 @@ resource "aws_iam_policy" "policy_query_dynamodb" {
             "dynamodb:Query",
             "dynamodb:PutItem"
         ],
-        "Resource" : module.dynamodb.dynamodb_table_name
+        "Resource" : module.dynamodb.dynamodb_table_arn
       }
     ]
   })
