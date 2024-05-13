@@ -42,7 +42,7 @@ resource "aws_api_gateway_integration" "lambda_get_integration" {
   http_method             = aws_api_gateway_method.car_get_method.http_method
   type                    = "AWS_PROXY"
   uri                     = var.car_lambda_function_arn
-  integration_http_method = "GET"
+  integration_http_method = "POST"
 }
 
 resource "aws_api_gateway_deployment" "api_deployment" {
