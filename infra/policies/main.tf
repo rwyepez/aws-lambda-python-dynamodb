@@ -46,9 +46,9 @@ resource "aws_iam_policy" "policy_query_dynamodb" {
       {
         "Sid" : "VisualEditor0",
         "Effect" : "Allow",
-        "Action": [
-            "dynamodb:Query",
-            "dynamodb:PutItem"
+        "Action" : [
+          "dynamodb:Query",
+          "dynamodb:PutItem"
         ],
         "Resource" : var.dynamodb_table_arn
       }

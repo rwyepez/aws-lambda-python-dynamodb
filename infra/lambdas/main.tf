@@ -39,7 +39,7 @@ resource "aws_lambda_function" "car_lambda_function" {
   filename         = data.archive_file.lambda_zip.output_path
   timeout          = 30
   environment {
-    variables = {      
+    variables = {
       DYNAMODB_TABLE = var.dynamodb_table_name
     }
   }

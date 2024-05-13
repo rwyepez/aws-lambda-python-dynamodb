@@ -1,4 +1,4 @@
 variable "dynamodb_table_arn" {
-  type = string
+  type        = string
   description = "dynamodb table arn"
 }
