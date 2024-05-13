@@ -1,19 +1,5 @@
-# Table to store data
-resource "aws_dynamodb_table" "my_table" {
-  name           = "my_table"
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "carId"
-  range_key      = "model"
-
-  attribute {
-    name = "carId"
-    type = "S"
-  }
-
-  attribute {
-    name = "model"
-    type = "S"
-  }
+module "dynamodb" {
+  source = "./dynamodb"
 }
 
 # LAMBDAS POLICIES
@@ -68,7 +54,7 @@ resource "aws_iam_policy" "policy_query_dynamodb" {
             "dynamodb:Query",
             "dynamodb:PutItem"
         ],
-        "Resource" : aws_dynamodb_table.my_table.arn
+        "Resource" : module.dynamodb.name
       }
     ]
   })
@@ -116,7 +102,7 @@ resource "aws_lambda_function" "car_lambda_function" {
   timeout          = 30
   environment {
     variables = {      
-      DYNAMODB_TABLE = aws_dynamodb_table.my_table.name
+      DYNAMODB_TABLE = module.dynamodb.name
     }
   }
 }
