@@ -20,6 +20,7 @@ Before getting started, you'll need to set up your environment with some tools a
 1. **Create an S3 Bucket**:
    - You'll need an S3 bucket to handle Terraform state.
    - Make sure to create the bucket in the region where you want to deploy your resources.
+   - Update bucket name in config.tf file
 
 ### Configure AWS CLI
 
